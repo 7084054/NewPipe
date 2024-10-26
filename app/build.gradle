@@ -128,11 +128,12 @@ configurations {
 }
 
 checkstyle {
+
     getConfigDirectory().set(rootProject.file("checkstyle"))
     ignoreFailures false
     showViolations true
     toolVersion = checkstyleVersion
-}
+ }
 
 tasks.register('runCheckstyle', Checkstyle) {
     source 'src'
