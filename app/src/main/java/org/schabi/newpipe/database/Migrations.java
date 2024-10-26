@@ -306,7 +306,7 @@ public final class Migrations {
     public static final Migration MIGRATION_9_10 = new Migration(DB_VER_9, DB_VER_10) {
         @Override
         public void migrate(@NonNull final SupportSQLiteDatabase database) {
-            // Adding in new column for search shortcuts
+            // Adding in new column for search shortcut
             database.execSQL("ALTER TABLE `search_history` ADD COLUMN `bookmark` "
                     + "INTEGER NOT NULL DEFAULT 0");
 
