@@ -580,6 +580,24 @@ public class SearchFragment extends BaseListFragment<SearchInfo, ListExtractor.I
                     showDeleteSuggestionDialog(item);
                 }
             }
+
+            @Override
+            public void onBookmark(final SuggestionItem item) {
+
+                if  (item.historyId > 0) {
+                    disposables.add(historyRecordManager.onBookmark(item)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(
+                                    ignored -> {
+                                    },
+                                    throwable -> showSnackBarError(new ErrorInfo(throwable,
+                                            UserAction.SEARCHED, item.query,
+                                            item.serviceId))
+                            ));
+                }
+                // Trigger refresh of list to show updated book using existing text watcher
+                searchEditText.setText(searchEditText.getText());
+            }
         });
 
         if (textWatcher != null) {
@@ -727,7 +745,7 @@ public class SearchFragment extends BaseListFragment<SearchInfo, ListExtractor.I
                 .toObservable()
                 .map(searchHistoryEntries ->
                         searchHistoryEntries.stream()
-                                .map(entry -> new SuggestionItem(true, entry))
+                                .map(entry -> new SuggestionItem(entry))
                                 .collect(Collectors.toList()));
     }
 
